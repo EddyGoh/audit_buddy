@@ -5,4 +5,3 @@ python-dotenv
 tiktoken
 crewai==0.41.0
 crewai[tools]
-pymupdf

@@ -22,3 +22,8 @@ dist/
 
 # Streamlit
 .streamlit/secrets.toml
+
+data/
+db/
+audit_buddy.ipynb
+APM.md
