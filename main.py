@@ -5,6 +5,10 @@ from crewai_tools import PDFSearchTool, SerperDevTool, ScrapeWebsiteTool
 from crewai import Agent, Task, Crew
 from PIL import Image
 
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 API_KEY = os.environ.get("OPENAI_API_KEY")
 SERPER_API_KEY  = os.environ.get("SERPER_API_KEY")
 OPENAI_MODEL_NAME = os.environ.get('OPENAI_MODEL_NAME')
