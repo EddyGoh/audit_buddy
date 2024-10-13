@@ -5,7 +5,7 @@ from crewai_tools import PDFSearchTool, SerperDevTool, ScrapeWebsiteTool
 from crewai import Agent, Task, Crew
 from PIL import Image
 
-__import__('pysqlite3')
+import('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
