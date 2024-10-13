@@ -1,6 +1,7 @@
 openai==1.51.2
 streamlit==1.39.0
 pandas==2.2.3
-tiktoken==0.7.0
+tiktoken==0.7.0p ins
 crewai==0.41.0
 crewai-tools==0.4.26
+chromadb==0.3.29
