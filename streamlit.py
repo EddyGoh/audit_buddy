@@ -1,13 +1,16 @@
 import os
 import streamlit as st
 from openai import OpenAI
+from dotenv import load_dotenv
 from crewai_tools import PDFSearchTool, SerperDevTool, ScrapeWebsiteTool
 from crewai import Agent, Task, Crew
 from PIL import Image
 
-API_KEY = os.environ.get("OPENAI_API_KEY")
-SERPER_API_KEY  = os.environ.get("SERPER_API_KEY")
-OPENAI_MODEL_NAME = os.environ.get('OPENAI_MODEL_NAME')
+# Load environment variables
+load_dotenv('.env')
+os.environ['OPENAI_MODEL_NAME'] = "gpt-4o-mini"
+API_KEY = os.getenv("OPENAI_API_KEY")
+SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
 logo_image = Image.open("./image/logo.png")
 
@@ -27,7 +30,6 @@ def extract_file_paths(uploaded_files):
 st.image(logo_image, width=200)
 topic = st.text_input("Enter Audit Topic [For example: Baby Bonus Scheme]:")
 uploaded_files = st.file_uploader("Upload PDF files that may potentially contain past audit findings", accept_multiple_files=True, type="pdf")
-
 
 if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
     os.makedirs("tempdir", exist_ok=True)

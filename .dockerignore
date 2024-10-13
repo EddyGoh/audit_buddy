@@ -1,2 +1,10 @@
 .env
 venv
+db
+data
+.git
+.gitignore
+.gitattributes
+audit_buddy.ipynb
+streamlit.py
+APM.md
