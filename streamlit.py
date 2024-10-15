@@ -50,8 +50,8 @@ uploaded_files = st.file_uploader("Upload PDF files that may potentially contain
 
 domain = st.multiselect(
     "Focused websites to search through",
-    ["Hansard SG","Gov.sg","Reddit","Hardwarezone Forums"],
-    ["Hansard SG", "Gov.sg"],
+    ["Hansard SG","Gov.sg","Reddit","Hardwarezone Forums", "https://www.egazette.gov.sg/"],
+    ["Hansard SG", "https://www.egazette.gov.sg/"],
 )
 
 if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
@@ -137,41 +137,40 @@ if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
         verbose=True
     )
 
-    with st.spinner("Generating Audit Planning Memo...[It will take a while.]"):
+    with st.spinner("Formulating a Audit Planning Memo to conquer this audit. Success is imminent!"):
         result = crew.kickoff(inputs={"topic": topic, "file_paths": file_paths})
 
     st.success("Audit Planning Memo generated successfully!")
 
-    st.subheader("Raw Output")
-    st.text(result.raw)
+    # st.subheader("Raw Output")
+    # st.text(result.raw)
 
     st.subheader("Token Usage")
     st.text(result.token_usage)
 
-    for i in range(len(result.tasks_output[:-1])):
-        st.subheader(f"Task {i+1} Output")
-        st.text(result.tasks_output[i])
+    st.subheader("List of Websites:")
+    st.text(result.tasks_output[0])
+
+    st.subheader("List of Focused Websites:")
+    st.text(result.tasks_output[1])
+
+    st.subheader("Regulations extracted from websites:")
+    st.text(result.tasks_output[2])
+
+    st.subheader("Audit Findings extracted from PDFs:")
+    st.text(result.tasks_output[3])
+
+    # st.subheader("Token Usage")
+    # st.text(result.token_usage)
+    # for i in range(len(result.tasks_output[:-1])):
+    #     st.subheader(f"Task {i+1} Output")
+    #     st.text(result.tasks_output[i])
 
     st.subheader(f"Final Output")
     st.text(result.tasks_output[-1])
 
-    # st.subheader("Results:")
+    # st.subheader("Buddy says:")
     # st.text(result.raw)
-
-    # st.subheader("List of Websites:")
-    # st.text(result.tasks_output[0])
-
-    # st.subheader("Information extracted from websites:")
-    # st.text(result.tasks_output[1])
-
-    # st.subheader("Information extracted from PDFs:")
-    # st.text(result.tasks_output[2])
-
-    # st.subheader("Information extracted from PDFs:")
-    # st.text(result.tasks_output[3])
-
-    # st.subheader("Token Usage")
-    # st.text(result.token_usage)
 
     if os.path.exists("APM.md"):
         with open("APM.md", "r") as f:
