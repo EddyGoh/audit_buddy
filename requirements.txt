@@ -2,6 +2,6 @@ openai==1.51.2
 streamlit==1.39.0
 pandas==2.2.3
 tiktoken==0.7.0
-crewai==0.41.0
-crewai-tools==0.4.26
+crewai==0.70.1
+crewai-tools==0.12.1
 pysqlite3-binary
