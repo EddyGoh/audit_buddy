@@ -7,35 +7,31 @@ from crewai import Agent, Task, Crew, LLM
 from PIL import Image
 
 load_dotenv('.env')
+os.environ['OPENAI_MODEL_NAME'] = "gpt-4o-mini"
 API_KEY = os.getenv("OPENAI_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
-OPENAI_MODEL_NAME = os.getenv("OPENAI_MODEL_NAME")
-
-llm = LLM(
-    model="openai/"+OPENAI_MODEL_NAME,
-    api_key=API_KEY,
-    base_url="https://litellm.govtext.gov.sg/",
-    default_headers={"user-agent":"Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"}
-)
-
-tool_pdf = PDFSearchTool(
-    config=dict(
-        embedder=dict(
-            provider="openai",
-            config=dict(
-                model="text-embedding-3-large-prd-gcc2-lb"
-            ),
-        ),
-    )
-)
-
-
-logo_image = Image.open("./image/logo.png")
-
 client = OpenAI(api_key=API_KEY)
-tool_pdf = PDFSearchTool()
+
+# llm = LLM(
+#     model="openai/gpt-4o-prd-gcc2-lb",
+#     api_key=API_KEY,
+#     base_url="https://litellm.govtext.gov.sg/",
+#     default_headers={"user-agent":"Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"}
+# )
+
+# tool_pdf = PDFSearchTool(
+#     config=dict(
+#         embedder=dict(
+#             provider="openai",
+#             config=dict(
+#                 model="text-embedding-3-large-prd-gcc2-lb"
+#             ),
+#         ),
+#     )
+# )
 tool_search = SerperDevTool(n_results=8, country="sg")
 tool_webscrape = ScrapeWebsiteTool()
+tool_pdf = PDFSearchTool()
 
 def extract_file_paths(uploaded_files):
     file_paths = []
@@ -45,6 +41,7 @@ def extract_file_paths(uploaded_files):
         file_paths.append(os.path.join("tempdir", uploaded_file.name))
     return file_paths
 
+logo_image = Image.open("./image/logo.png")
 st.image(logo_image, width=200)
 topic = st.text_input("Enter Audit Topic [For example: Baby Bonus Scheme]:")
 uploaded_files = st.file_uploader("Upload PDF files that may potentially contain past audit findings", accept_multiple_files=True, type="pdf")
@@ -66,7 +63,7 @@ if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
         allow_delegation=True,
         max_iter=15,
         verbose=True,
-        llm = llm
+        # llm = llm
     )
 
     researcher = Agent(
@@ -77,7 +74,7 @@ if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
         allow_delegation=False,
         verbose=True,
         max_iter=15,
-        llm = llm
+        # llm = llm
     )
 
     audit_assistant = Agent(
@@ -87,7 +84,7 @@ if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
         allow_delegation=False,
         verbose=True,
         max_iter=15,
-        llm = llm
+        # llm = llm
     )
 
     task_search = Task(
