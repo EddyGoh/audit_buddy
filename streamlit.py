@@ -5,6 +5,11 @@ from dotenv import load_dotenv
 from crewai_tools import PDFSearchTool, SerperDevTool, ScrapeWebsiteTool
 from crewai import Agent, Task, Crew, LLM
 from PIL import Image
+from helper_functions.utility import check_password  
+    
+# Check if the password is correct.  
+if not check_password():  
+    st.stop()
 
 load_dotenv('.env')
 os.environ['OPENAI_MODEL_NAME'] = "gpt-4o-mini"
@@ -45,6 +50,18 @@ def extract_file_paths(uploaded_files):
 
 logo_image = Image.open("./image/logo.png")
 st.image(logo_image, width=200)
+
+with st.expander("DISCLAIMER"):
+    st.write("""
+
+    IMPORTANT NOTICE: This web application is developed as a proof-of-concept prototype. The information provided here is NOT intended for actual usage and should not be relied upon for making any decisions, especially those related to financial, legal, or healthcare matters.
+
+    Furthermore, please be aware that the LLM may generate inaccurate or incorrect information. You assume full responsibility for how you use any generated output.
+
+    Always consult with qualified professionals for accurate and personalized advice.
+
+    """)
+
 topic = st.text_input("Enter Audit Topic [For example: Baby Bonus Scheme]:")
 uploaded_files = st.file_uploader("Upload PDF files that may potentially contain past audit findings", accept_multiple_files=True, type="pdf")
 

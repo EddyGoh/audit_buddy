@@ -46,6 +46,18 @@ def extract_file_paths(uploaded_files):
 
 logo_image = Image.open("./image/logo.png")
 st.image(logo_image, width=200)
+
+with st.expander("DISCLAIMER"):
+    st.write("""
+
+    IMPORTANT NOTICE: This web application is developed as a proof-of-concept prototype. The information provided here is NOT intended for actual usage and should not be relied upon for making any decisions, especially those related to financial, legal, or healthcare matters.
+
+    Furthermore, please be aware that the LLM may generate inaccurate or incorrect information. You assume full responsibility for how you use any generated output.
+
+    Always consult with qualified professionals for accurate and personalized advice.
+
+    """)
+    
 topic = st.text_input("Enter Audit Topic [For example: Baby Bonus Scheme]:")
 uploaded_files = st.file_uploader("Upload PDF files that may potentially contain past audit findings", accept_multiple_files=True, type="pdf")
 
@@ -172,3 +184,5 @@ if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
     os.rmdir("tempdir")
 else:
     st.warning("Please enter an audit topic and upload at least one PDF file.")
+
+with st.expander("How to use this App"):
