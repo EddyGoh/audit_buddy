@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import os
 from helper_functions.utility import check_password  
     
 # Check if the password is correct.  

@@ -1,10 +1,11 @@
 import streamlit as st  
 import random  
-import hmac  
+import hmac
+import os
 
 # """  
 # This file contains the common components used in the Streamlit App.  
-# This includes the sidebar, the title, the footer, and the password check.  
+# This includes the password check.  
 # """  
 
 
@@ -12,7 +13,7 @@ def check_password():
     """Returns `True` if the user had the correct password."""  
     def password_entered():  
         """Checks whether a password entered by the user is correct."""  
-        if hmac.compare_digest(st.session_state["password"], st.secrets["password"]):  
+        if hmac.compare_digest(st.session_state["password"], os.environ.get("ABC_PASSWORD")):  
             st.session_state["password_correct"] = True  
             del st.session_state["password"]  # Don't store the password.  
         else:  

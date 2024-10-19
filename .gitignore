@@ -23,6 +23,8 @@ dist/
 # Streamlit
 .streamlit/secrets.toml
 
+# Custom for this project
+.devcontainer/
 data/
 db/
 audit_buddy.ipynb

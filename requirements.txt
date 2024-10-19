@@ -4,4 +4,3 @@ pandas==2.2.3
 tiktoken==0.7.0
 crewai==0.70.1
 crewai-tools==0.12.1
-pysqlite3-binary
