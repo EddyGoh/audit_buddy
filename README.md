@@ -9,7 +9,7 @@ YCH
 
 # How-to-run
 
-1. Set your OPENAI_API_KEY, SERPER_API_KEY and ABC_PASSWORD in an .env file pr enter them in the environment variables.
+1. Set your OPENAI_API_KEY, SERPER_API_KEY and ABC_PASSWORD in an .env file pr enter them in the environment variables. See env_example.txt
 2. run streamlit.py using streamlit "streamlit run streamlit.py"
 
 # Backlog
