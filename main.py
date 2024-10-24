@@ -14,16 +14,21 @@ load_dotenv('.env')
 # Check if the password is correct.  
 if not check_password():  
     st.stop()
-os.environ['OPENAI_API_BASE'] = "https://litellm.govtext.gov.sg/"
-os.environ['OPENAI_MODEL_NAME'] ="gpt-4o-prd-gcc2-lb"
-API_KEY = os.getenv("OPENAI_API_KEY")
+
+# OPENAI_MODEL_NAME = "gpt-4o-prd-gcc2-lb"
+# OPENAI_EMBEDDING_MODEL_NAME = "text-embedding-3-large-prd-gcc2-lb"
+# OPENAI_API_BASE = "https://litellm.govtext.gov.sg/"
+
+OPENAI_EMBEDDING_MODEL_NAME = "text-embedding-3-small"
+OPENAI_MODEL_NAME = "gpt-4o-mini"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
 llm = LLM(
-    model="openai/"+os.environ['OPENAI_MODEL_NAME'],
-    api_key=API_KEY,
-    base_url=os.environ['OPENAI_API_BASE'],
-    default_headers={"user-agent":"Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"}
+    model="openai/" + OPENAI_MODEL_NAME,
+    api_key = OPENAI_API_KEY
+    # base_url = OPENAI_API_BASE # when changing URL to GovText
+    # default_headers={"user-agent":"Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"} #for using GovText
 )
 
 tool_pdf = PDFSearchTool(
@@ -31,11 +36,12 @@ tool_pdf = PDFSearchTool(
         embedder=dict(
             provider="openai",
             config=dict(
-                model ="text-embedding-3-large-prd-gcc2-lb"
+                model = OPENAI_EMBEDDING_MODEL_NAME 
             ),
         ),
     )
 )
+
 
 tool_search = SerperDevTool(n_results=8, country="sg")
 tool_webscrape = ScrapeWebsiteTool()
@@ -120,7 +126,8 @@ def create_crewai_setup(topic,domain,file_paths):
         allow_delegation=True,
         max_iter=15,
         verbose=True,
-        llm = llm
+        max_rpm=10,
+        llm = llm,
     )
 
     researcher = Agent(
@@ -131,6 +138,7 @@ def create_crewai_setup(topic,domain,file_paths):
         allow_delegation=False,
         verbose=True,
         max_iter=15,
+        max_rpm=10,
         llm = llm
     )
 
@@ -141,6 +149,7 @@ def create_crewai_setup(topic,domain,file_paths):
         allow_delegation=False,
         verbose=True,
         max_iter=15,
+        max_rpm=10,
         llm = llm
     )
 
@@ -195,8 +204,7 @@ def create_crewai_setup(topic,domain,file_paths):
     crew = Crew(
         agents=[auditor, researcher, audit_assistant],
         tasks=[task_search, task_focused_search, task_websitesearch, task_readpdf, task_write],
-        verbose=True,
-        process = Process.sequential
+        verbose=True
     )   
 
     result = crew.kickoff(inputs={"topic": topic, "domain": domain, "file_paths": file_paths})
@@ -230,7 +238,7 @@ if st.button("Let's Go, Buddy!!!") and topic and uploaded_files:
     st.text(result.tasks_output[3])
 
     st.subheader(f"Final Output")
-    st.text(result.tasks_output[-1])
+    st.markdown(result.tasks_output[-1],unsafe_allow_html=True)
 
     if os.path.exists("APM.md"):
         with open("APM.md", "r") as f:

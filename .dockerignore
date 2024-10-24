@@ -9,3 +9,4 @@ audit_buddy.ipynb
 streamlit.py
 APM.md
 .streamlit
+__pycache__

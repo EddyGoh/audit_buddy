@@ -1,3 +1,0 @@
-OPENAI_API_KEY="<your_open_api_key>"
-SERPER_API_KEY="<your_serper_api_key>"
-ABC_PASSWORD="<password>"
